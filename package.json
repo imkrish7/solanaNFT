@@ -3,12 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@metaplex/js": "^4.12.0",
+    "@nfteyez/sol-rayz": "^0.9.1",
+    "@project-serum/anchor": "^0.20.1",
+    "@solana/spl-token": "^0.1.8",
+    "@solana/wallet-adapter-base": "^0.9.3",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
+    "assert": "^2.0.0",
+    "axios": "^0.25.0",
+    "crypto-browserify": "^3.12.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-scripts": "5.0.0",
+    "react-router-dom": "^6.2.1",
+    "react-scripts": "^4.0.3",
+    "styled-components": "^5.3.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -23,6 +33,10 @@
       "react-app/jest"
     ]
   },
+  "resolutions": {
+    "styled-components": "^5",
+    "react-error-overlay": "^6.0.10"
+  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -34,5 +48,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "react-error-overlay": "^6.0.10"
   }
 }
