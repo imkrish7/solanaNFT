@@ -1,8 +1,7 @@
 import React, { useMemo } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 const NFT = props => {
-  const params = useParams();
   const { state } = useLocation();
   const { properties: { creators }, mint } = state;
   const creator = useMemo(
@@ -90,4 +89,5 @@ const Value = styled.span`
   padding: 5px 10px;
   border-radius: 4px;
 `;
+
 export default NFT;

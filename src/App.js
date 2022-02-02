@@ -7,10 +7,7 @@ import NFT from "./components/NFT";
 import NFTList from "./components/NFTList";
 import styled from "styled-components";
 const LAMPORTS = 0.000000001;
-const MAX_NAME_LENGTH = 32;
-const MAX_URI_LENGTH = 200;
-const MAX_SYMBOL_LENGTH = 10;
-const MAX_CREATOR_LEN = 32 + 1 + 1;
+
 function App() {
   const [address, setAddress] = useState(null);
   const [balance, setBalance] = useState(0);

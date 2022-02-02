@@ -1,26 +1,20 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { Provider, Program, web3 } from "@project-serum/anchor";
 import { Connection, clusterApiUrl, PublicKey } from "@solana/web3.js";
-import { programs } from "@metaplex/js";
 import {
   getParsedNftAccountsByOwner,
-  isValidSolanaAddress,
   createConnectionConfig
 } from "@nfteyez/sol-rayz";
-const tokenPublicKey = "Gz3vYbpsB2agTsAwedtvtTkQ1CG9vsioqLW3r9ecNpvZ";
-const MAX_NAME_LENGTH = 32;
-const MAX_URI_LENGTH = 200;
-const MAX_SYMBOL_LENGTH = 10;
-const MAX_CREATOR_LEN = 32 + 1 + 1;
+
 const RPC_HOST = "https://explorer-api.devnet.solana.com";
 const MACHINE_ID = "DXZrhr2DfPjHTF5ZaNQUbkypvfymk7WXZ6pNQozpCHsw";
 
-const { metadata: { Metadata, MetadataProgram } } = programs;
-
 const NFTList = ({ walletAddress }) => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [nfts, setNfts] = useState([]);
   const network = clusterApiUrl("devnet");
   const opts = { preflightCommitment: "confirmed" };
@@ -45,7 +39,6 @@ const NFTList = ({ walletAddress }) => {
     if (nfts.length > 0) {
       for (let i = 0; i < nfts.length; i++) {
         const { data: { uri }, mint } = nfts[i];
-        console.log(nfts[i]);
         const fetchedData = await axios(uri);
         result = [...result, { ...fetchedData.data, mint }];
       }
@@ -55,8 +48,7 @@ const NFTList = ({ walletAddress }) => {
 
   const getAllNfts = async () => {
     try {
-      const connect = createConnectionConfig(clusterApiUrl("devnet"));
-      const provider = getProvider();
+      const connect = createConnectionConfig(network);
       const nftsData = await getParsedNftAccountsByOwner({
         publicAddress: walletAddress.toString(),
         connection: connect,
@@ -64,8 +56,10 @@ const NFTList = ({ walletAddress }) => {
       });
       const sanitized = await getSerialized(nftsData);
       setNfts([...sanitized]);
+      setLoading(false);
     } catch (error) {
       console.error(error);
+      setError(true);
     }
   };
   useEffect(
@@ -80,15 +74,25 @@ const NFTList = ({ walletAddress }) => {
   return (
     <Container>
       <Header>NFT List</Header>
+
       <List>
-        {nfts.length > 0 &&
-          nfts.map((nft, index) => {
-            return (
-              <Link key={index} to={`/nft/${nft.name}`} state={{ ...nft }}>
-                <Image src={nft.image} />
-              </Link>
-            );
-          })}
+        {loading
+          ? <Loader />
+          : error
+            ? <Error>Something went wrong. Please refresh</Error>
+            : nfts.length > 0
+              ? nfts.map((nft, index) => {
+                  return (
+                    <Link
+                      key={index}
+                      to={`/nft/${nft.name}`}
+                      state={{ ...nft }}
+                    >
+                      <Image src={nft.image} />
+                    </Link>
+                  );
+                })
+              : <Header>You have no NFT</Header>}
       </List>
     </Container>
   );
@@ -109,6 +113,7 @@ const List = styled.div`
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  justify-content: center;
 `;
 
 const Image = styled.img`
@@ -116,4 +121,29 @@ const Image = styled.img`
   height: 150px;
   border-radius: 10px;
 `;
+
+const rotate = keyframes`
+  from{
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+  }
+`;
+
+const Loader = styled.div`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 4px solid #ccc;
+  border-top-color: blue;
+  animation: ${rotate} 500ms linear infinite;
+`;
+
+const Error = styled.span`
+  color: #e74c3c;
+  font-weight: 450;
+  font-size: 20px;
+`;
+
 export default NFTList;
