@@ -31,6 +31,7 @@ function App() {
         }
       } else {
         alert("Solana object not found! Get a Phantom Wallet");
+        window.open("https://phantom.app/", "_blank");
       }
     } catch (error) {
       console.error(error);
