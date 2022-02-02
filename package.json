@@ -35,7 +35,7 @@
   },
   "resolutions": {
     "styled-components": "^5",
-    "react-error-overlay": "^6.0.10"
+    "react-error-overlay": "6.0.9"
   },
   "browserslist": {
     "production": [
@@ -50,6 +50,6 @@
     ]
   },
   "devDependencies": {
-    "react-error-overlay": "^6.0.10"
+    "react-error-overlay": "6.0.9"
   }
 }
