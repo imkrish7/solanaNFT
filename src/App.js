@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
-import { web3 } from "@project-serum/anchor";
-import { Connection, clusterApiUrl, PublicKey } from "@solana/web3.js";
+import { Connection, clusterApiUrl } from "@solana/web3.js";
 import NFT from "./components/NFT";
 import NFTList from "./components/NFTList";
 import styled from "styled-components";
@@ -13,9 +12,7 @@ function App() {
   const [balance, setBalance] = useState(0);
   const network = clusterApiUrl("devnet");
   const opts = { preflightCommitment: "confirmed" };
-  const candyMachineProgram = new web3.PublicKey(
-    "cndy3Z4yapfJBmL3ShUp5exZKqR3z33thTzeNMm2gRZ"
-  );
+
   const checkWalletConnected = async () => {
     try {
       const { solana } = window;
@@ -58,7 +55,6 @@ function App() {
     const { solana } = window;
     try {
       if (solana) {
-        const mint = web3.Keypair.generate();
         const connection = new Connection(network, opts.preflightCommitment);
         const _balance = await connection.getBalance(address);
         const balanceInSol = _balance * LAMPORTS;
@@ -76,6 +72,7 @@ function App() {
     window.addEventListener("load", onLoad);
     return () => window.removeEventListener("load", onLoad);
   }, []);
+
   useEffect(
     () => {
       fetchBalance();

@@ -2,38 +2,17 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
-import { Provider, Program, web3 } from "@project-serum/anchor";
-import { Connection, clusterApiUrl, PublicKey } from "@solana/web3.js";
+import { clusterApiUrl } from "@solana/web3.js";
 import {
   getParsedNftAccountsByOwner,
   createConnectionConfig
 } from "@nfteyez/sol-rayz";
-
-const RPC_HOST = "https://explorer-api.devnet.solana.com";
-const MACHINE_ID = "DXZrhr2DfPjHTF5ZaNQUbkypvfymk7WXZ6pNQozpCHsw";
 
 const NFTList = ({ walletAddress }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [nfts, setNfts] = useState([]);
   const network = clusterApiUrl("devnet");
-  const opts = { preflightCommitment: "confirmed" };
-  const candyMachineProgram = new web3.PublicKey(
-    "cndy3Z4yapfJBmL3ShUp5exZKqR3z33thTzeNMm2gRZ"
-  );
-
-  const getProvider = () => {
-    const rpcHost = RPC_HOST;
-    const connection = new Connection(rpcHost);
-    const provider = new Provider(
-      connection,
-      window.solana,
-      opts.preflightCommitment
-    );
-
-    return provider;
-  };
-
   const getSerialized = async nfts => {
     let result = [];
     if (nfts.length > 0) {
@@ -74,7 +53,6 @@ const NFTList = ({ walletAddress }) => {
   return (
     <Container>
       <Header>NFT List</Header>
-
       <List>
         {loading
           ? <Loader />
