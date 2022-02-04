@@ -73,12 +73,11 @@ function App() {
     return () => window.removeEventListener("load", onLoad);
   }, []);
 
-  useEffect(
-    () => {
+  useEffect(() => {
+    if (address) {
       fetchBalance();
-    },
-    [address]
-  );
+    }
+  });
   return (
     <Container>
       {address && <Header>Wallet Connected</Header>}

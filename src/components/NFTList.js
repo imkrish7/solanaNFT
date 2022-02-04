@@ -41,14 +41,11 @@ const NFTList = ({ walletAddress }) => {
       setError(true);
     }
   };
-  useEffect(
-    () => {
-      if (walletAddress) {
-        getAllNfts();
-      }
-    },
-    [walletAddress]
-  );
+  useEffect(() => {
+    if (walletAddress) {
+      getAllNfts();
+    }
+  });
 
   return (
     <Container>
